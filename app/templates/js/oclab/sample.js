@@ -43,7 +43,9 @@ $(".change-graph-size-parameter").on("change", function(){
 })
 
 $(".change-bands-table").on("change", function(){
-    createBandsTable()
+    //createBandsTable()
+   // createBandsTable(getNumberBands());
+    newComponentsTable(getNumberBands());
     calcVol()
 })
 
@@ -77,20 +79,41 @@ function handlePropertyChange() {
           });
           break;
   }
-  createBandsTable();
+  //createBandsTable();
+  //createBandsTable(getNumberBands());
+  newComponentsTable(getNumberBands());
   $('.change-graph-size-parameter').trigger("change");
 }
 
-function createBandsTable(){
-    gap_size = parseFloat($("#id_gap").val());
-    band_size = parseFloat($("#id_value").val());
-    property = $("#id_main_property").val();
-    number_bands = parseFloat($("#id_value").val());
+function getNumberBands() {
+  const gap_size = parseFloat($("#id_gap").val());
+  const band_size = parseFloat($("#id_value").val());
+  const property = $("#id_main_property").val();
+  const working_area = nBandsWorkingArea();
 
-    working_area = nBandsWorkingArea()
-    if (property=='2'){number_bands = Math.trunc(working_area[0]/(band_size+gap_size))}
-    newComponentsTable(number_bands);
+  if (property === '1') {
+      return parseFloat($("#id_value").val());  
+  } else if (property === '2') {
+      return Math.trunc(working_area[0] / (band_size + gap_size)); 
+  }
+  return 0;
 }
+
+function createBandsTable(number_bands = null){
+
+newComponentsTable(number_bands);
+}
+
+// function createBandsTable(){
+//     gap_size = parseFloat($("#id_gap").val());
+//     band_size = parseFloat($("#id_value").val());
+//     property = $("#id_main_property").val();
+//     number_bands = parseFloat($("#id_value").val());
+
+//     working_area = nBandsWorkingArea()
+//     if (property=='2'){number_bands = Math.trunc(working_area[0]/(band_size+gap_size))}
+//     newComponentsTable(number_bands);
+// }
 // MAIN
 function mainCalculations(){
     let plate_x_size = parseFloat($("#id_size_x").val());
@@ -101,7 +124,8 @@ function mainCalculations(){
     let offset_bottom_size = parseFloat($("#id_offset_bottom").val());
 
     let gap_size = parseFloat($("#id_gap").val());
-    let number_bands = parseFloat($("#id_value").val());
+    //let number_bands = parseFloat($("#id_value").val());
+    const number_bands = getNumberBands();
     let band_size = parseFloat($("#id_value").val());
 
     let band_height = parseFloat($("#id_height").val());
@@ -134,8 +158,10 @@ function mainCalculations(){
       break;
     // Length
     case '2':
-      number_bands = Math.trunc(working_area[0]/(band_size+gap_size))
+      //number_bands = Math.trunc(working_area[0]/(band_size+gap_size))
       if(areErrors('#id_space_error',number_bands<1)){return}
+      //createBandsTable(number_bands);
+      newComponentsTable(number_bands);
       break;
   }
 
@@ -213,9 +239,19 @@ function totalBandsLength(working_area,sum_gaps_size,number_bands){
 }
 
 // Create a new Table with a given number of rows
-function newComponentsTable(number_row){
-    table.destructor()
-    table = new Table(number_row, calcVol);
+// function newComponentsTable(number_row){
+//     table.destructor()
+//     table = new Table(number_row, calcVol);
+// }
+function newComponentsTable(desiredRows){
+    const diff = desiredRows - table.numberOfRows;
+
+    if (diff > 0){                  
+        table.addEmptyRows(diff);
+    } else if (diff < 0){           
+        table.removeRowsFromEnd(-diff);
+    }
+    
 }
 
 // Change the Graph sizes with the size x and y field values.
@@ -329,7 +365,9 @@ function loadTableData(tableData) {
 }
 
 $(document).ready(function() {
-  createBandsTable()
+  //createBandsTable()
+  const defaultValue = parseFloat($("#id_value").val());
+  createBandsTable(defaultValue);
   calcVol()
   list_of_saved.loadList()
 });

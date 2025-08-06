@@ -12,7 +12,7 @@ class GcodeGenerator:
     vial_9= "145" #rinse bottle
     vial_8= "267.5" #vial 8
     vial_7= "253.5" #vial 7
-    vial_6= "237.5" #vial 6
+    vial_6= "239.5" #vial 6
     vial_5= "225.5" #vial 5
     vial_4= "211.5" #vial 4
     vial_3= "197.5" #vial 3
