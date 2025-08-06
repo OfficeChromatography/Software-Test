@@ -1,0 +1,36 @@
+{% load static %}
+<div class="modal fade" id="wayvalveAsModal" tabindex="-1" role="dialog" aria-labelledby="wayvalveAsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="wayvalveModalLabel">Warm Up</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                  <form id='wayvalveControlForm' method="post"> {% csrf_token %}
+                      <div class="input-group">
+                      <p>#cycles</p>
+                      <label for="wayvalve_times" class="col-xl-2 col-form-label col-form-label-sm text-truncate"></label>
+                      <input type="number" name="wayvalve_times" value="1" class="form-control" step="1" required="" id="id_wayvalve_times">
+                      <div class="input-group-append">
+                          <span class="input-group-text">times</span>
+                      </div>
+                    </div>
+                  </br>
+                  </form>
+                  <div class="float-right">
+                  <button class="btn btn-secondary btn-icon-split btn-sm" id='wayvalve' type="submit">
+                    
+                  <span class="text">Start!</span>
+                  </button>
+                </div>
+            </div>
+            <div class="modal-header"></div>
+           
+            
+        </div>
+    </div>
+</div>
+<script src="{% static 'modules/wayvalve/wayvalve4.js' %}"></script>
